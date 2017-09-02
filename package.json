@@ -1,0 +1,35 @@
+{
+  "name": "vault-auth-aws",
+  "version": "0.1.0",
+  "description": "js module that get token from vault HashiCorp server by using AWS STS ",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "aws4": "^1.6.0",
+    "request": "^2.81.0",
+    "validator": "^8.1.0"
+  },
+  "devDependencies": {
+    "del": "^3.0.0",
+    "eslint-html-reporter": "^0.5.2",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^4.0.0",
+    "gulp-istanbul": "^1.1.2",
+    "gulp-jasmine": "^2.4.2"
+  },
+  "scripts": {
+    "test": "gulp"
+  },
+  "keywords": [
+    "vault",
+    "hashicorp",
+    "token",
+    "aws",
+    "lambda",
+    "sts"
+  ],
+  "author": "Abdullah Shahin",
+  "license": "ISC"
+}
