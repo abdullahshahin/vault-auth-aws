@@ -11,7 +11,7 @@ class configs {
         this.vaultAppName = args.vaultAppName || process.env.AWS_LAMBDA_FUNCTION_NAME;
         this.followAllRedirects = args.followAllRedirects || true;
         this.certFilePath = args.certFilePath;
-        this.sslRejectUnAuthorized = args.sslRejectUnAuthorized?true:false;
+        this.sslRejectUnAuthorized = args.sslRejectUnAuthorized===undefined||args.sslRejectUnAuthorized===true?true:false;
     }
     validateConfigs () {
         if(typeof this.ssl !== 'boolean')
