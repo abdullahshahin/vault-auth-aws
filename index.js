@@ -14,7 +14,7 @@ class vaultAwsAuth {
     }
 
     getOptions () {
-        let awsLoginConfigs = new awsSignedCongifs({host:this.config,vaultAppName:this.configs.vaultAppName});
+        let awsLoginConfigs = new awsSignedCongifs({host:this.configs.host,vaultAppName:this.configs.vaultAppName});
         let options = {
             url: this.configs.uri,
             followAllRedirects: this.configs.followAllRedirects,
@@ -32,15 +32,18 @@ class vaultAwsAuth {
     authenticate () {
         return new Promise((resolve, reject) => {
             let options = this.getOptions();
-            request.get(options, function (err, res, body) {
+            request.post(options, function (err, res, body) {
                 if(err)
                     reject(err);
                 else {
-                    resolve(body);
+                    let result = JSON.parse(body);
+                    if(result.errors)
+                        reject(result);
+                    else
+                        resolve(result);
                 }
             });
         });
     }
 }
-
 module.exports = vaultAwsAuth;
