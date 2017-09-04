@@ -92,7 +92,7 @@ BRDA:11,4,0,13
 BRDA:11,4,1,0
 BRDA:12,5,0,13
 BRDA:12,5,1,12
-BRDA:14,6,0,13
+BRDA:14,6,0,0
 BRDA:14,6,1,13
 BRDA:17,7,0,1
 BRDA:17,7,1,9
@@ -120,7 +120,7 @@ BRDA:57,17,1,4
 BRDA:71,18,0,3
 BRDA:71,18,1,4
 BRF:37
-BRH:34
+BRH:33
 end_of_record
 TN:
 SF:/Users/abshahin/dev/vault-auth-aws/index.js

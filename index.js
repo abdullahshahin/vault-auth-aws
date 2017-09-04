@@ -23,7 +23,7 @@ class vaultAwsAuth {
         if(this.configs.sslCertificate) {
             options['cert'] = this.configs.sslCertificate;
         }
-        if(this.configs.sslRejectUnAuthorized) {
+        if(!this.configs.sslRejectUnAuthorized) {
             process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
         }
         return options;
