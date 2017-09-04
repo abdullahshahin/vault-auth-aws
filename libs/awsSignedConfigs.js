@@ -14,17 +14,18 @@ class awsSignedConfigs {
                 headers: {'X-Vault-AWS-IAM-Server-ID': this.vaultHost},
                 body: this.awsRequestBody
             });
+            
         }
         else {
            var signedRequest = aws4.sign({service: 'sts', body: this.awsRequestBody});
         }
-
         return signedRequest;
     }
 
     getSignedHeaders () {
-        let headers = this.getSignedRequest();
-        for (var header in headers) {
+        let signedRequest = this.getSignedRequest();
+        let headers = signedRequest.headers;
+        for (let header in headers) {
             if (typeof headers[header] === 'number') {
                 headers[header] = headers[header].toString();
             }
@@ -35,6 +36,7 @@ class awsSignedConfigs {
 
     getSignedConfigs() {
         let headers = this.getSignedHeaders();
+
         return {
             role: this.vaultAppName,
             iam_http_request_method: 'POST',

@@ -46,4 +46,5 @@ class vaultAwsAuth {
         });
     }
 }
+
 module.exports = vaultAwsAuth;
