@@ -14,7 +14,7 @@ class vaultAwsAuth {
         this.configs = configs.getConfigs();
     }
 
-    getOptions () {
+    getOptions (creds) {
         let awsLoginConfigs = new awsSignedCongifs({host:this.configs.host,vaultAppName:this.configs.vaultAppName});
         let options = {
             url: this.configs.uri,
