@@ -53,7 +53,7 @@ describe('Testing  Configuration files', () => {
         let myConfigs = new configsObject(inValidTestConfigs(2));
         let validated = myConfigs.validateConfigs();
         expect(validated.valid).toBe(false);
-        expect(validated.details).toEqual('port is a number and must be within 1025 to 65536');
+        expect(validated.details).toEqual('port is a number and must be within 1 to 65536');
     });
 
     it('4.4) configs validate must check the type of values of configs entered by the user, apiVersion part', () => {
