@@ -25,10 +25,10 @@ class configs {
                 details: 'host must be an IP address or fully qualified domain name'
             };
         }
-        if(typeof this.port !== 'number' || this.port < 1025 || this.port > 65536) {
+        if(typeof this.port !== 'number' || this.port < 1 || this.port > 65536) {
             return {
                 valid: false,
-                details: 'port is a number and must be within 1025 to 65536'
+                details: 'port is a number and must be within 1 to 65536'
             };
         }
         if(this.apiVersion !== 'v1' && this.apiVersion !== 'v2') {
