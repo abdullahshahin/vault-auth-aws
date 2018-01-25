@@ -12,7 +12,7 @@ You can use below code to login to vault server from Lambda, by default vault ap
 const vaultAuthClient = require('vault-auth-aws');
 let vaultClient = new vaultAwsAuth({host: 'vault.example.com'});
 vaultClient.authenticate()
-        .then((sucess) => {
+        .then((success) => {
                 const vault = require('node-vault')({
                 apiVersion: config.apiVersion,
                 endpoint: config.endpoint,
