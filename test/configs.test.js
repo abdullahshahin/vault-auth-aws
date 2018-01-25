@@ -70,8 +70,15 @@ describe('Testing  Configuration files', () => {
         expect(validated.details).toEqual('vaultAppName must be string');
     });
 
-    it('4.5) configs validate must check the type of values of configs entered by the user, followAllRedirects part', () => {
+    it('4.6) configs validate must check the type of values of configs entered by the user, vaultLoginUrl part', () => {
         let myConfigs = new configsObject(inValidTestConfigs(5));
+        let validated = myConfigs.validateConfigs();
+        expect(validated.valid).toBe(false);
+        expect(validated.details).toEqual('vaultLoginUrl must be string');
+    });
+
+    it('4.7) configs validate must check the type of values of configs entered by the user, followAllRedirects part', () => {
+        let myConfigs = new configsObject(inValidTestConfigs(6));
         let validated = myConfigs.validateConfigs();
         expect(validated.valid).toBe(false);
         expect(validated.details).toEqual('followAllRedirects must be boolean');
@@ -125,8 +132,13 @@ function inValidTestConfigs (index) {
         {
             ssl: true,
             host: 'vault.example.com',
-            vaultAppName: 'mySuperSecrets',
             vaultAppName: true
+        },
+        {
+            ssl: true,
+            host: 'vault.example.com',
+            vaultAppName: 'mySuperSecrets',
+            vaultLoginUrl: true
         },
         {
             ssl: true,
