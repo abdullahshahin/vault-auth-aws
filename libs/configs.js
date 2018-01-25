@@ -37,16 +37,16 @@ class configs {
                 details: 'API version is either v1 or v2'
             };
         }
-        if(typeof this.vaultAppName !== 'string') {
-            return {
-                valid: false,
-                details: 'vaultAppName must be string'
-            };
-        }
         if(typeof this.vaultLoginUrl !== 'string') {
             return {
                 valid: false,
                 details: 'vaultLoginUrl must be string'
+            };
+        }
+        if(typeof this.vaultAppName !== 'string') {
+            return {
+                valid: false,
+                details: 'vaultAppName must be string'
             };
         }
         if(typeof this.followAllRedirects !== 'boolean') {
