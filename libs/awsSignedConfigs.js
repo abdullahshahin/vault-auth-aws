@@ -7,23 +7,31 @@ class awsSignedConfigs {
         this.awsRequestUrl = 'https://sts.amazonaws.com/';
         this.awsRequestBody = 'Action=GetCallerIdentity&Version=2011-06-15';
     }
-    getSignedRequest () {
+    getSignedRequest (creds) {
+        let awsCreds = {
+            accessKeyId: creds.accessKeyId,
+            secretAccessKey: creds.secretAccessKey
+        };
+        if (creds.sessionToken) {
+            awsCreds.sessionToken = creds.sessionToken;
+        }
+
         if(this.vaultHost) {
             var signedRequest = aws4.sign({
                 service: 'sts',
                 headers: {'X-Vault-AWS-IAM-Server-ID': this.vaultHost},
                 body: this.awsRequestBody
-            });
+            }, awsCreds);
             
         }
         else {
-           var signedRequest = aws4.sign({service: 'sts', body: this.awsRequestBody});
+           var signedRequest = aws4.sign({service: 'sts', body: this.awsRequestBody}, awsCreds);
         }
         return signedRequest;
     }
 
-    getSignedHeaders () {
-        let signedRequest = this.getSignedRequest();
+    getSignedHeaders (creds) {
+        let signedRequest = this.getSignedRequest(creds);
         let headers = signedRequest.headers;
         for (let header in headers) {
             if (typeof headers[header] === 'number') {
@@ -34,8 +42,8 @@ class awsSignedConfigs {
         return headers;
     }
 
-    getSignedConfigs() {
-        let headers = this.getSignedHeaders();
+    getSignedConfigs(creds) {
+        let headers = this.getSignedHeaders(creds);
 
         return {
             role: this.vaultAppName,

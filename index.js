@@ -1,3 +1,4 @@
+const AWS = require('aws-sdk');
 const configsClass = require('./libs/configs');
 const awsSignedCongifs = require('./libs/awsSignedConfigs');
 const request = require('request');
@@ -13,12 +14,12 @@ class vaultAwsAuth {
         this.configs = configs.getConfigs();
     }
 
-    getOptions () {
+    getOptions (creds) {
         let awsLoginConfigs = new awsSignedCongifs({host:this.configs.host,vaultAppName:this.configs.vaultAppName});
         let options = {
             url: this.configs.uri,
             followAllRedirects: this.configs.followAllRedirects,
-            body: JSON.stringify(awsLoginConfigs.getSignedConfigs())
+            body: JSON.stringify(awsLoginConfigs.getSignedConfigs(creds))
         };
         if(this.configs.sslCertificate) {
             options['cert'] = this.configs.sslCertificate;
@@ -30,18 +31,21 @@ class vaultAwsAuth {
     }
 
     authenticate () {
-        return new Promise((resolve, reject) => {
-            let options = this.getOptions();
-            request.post(options, function (err, res, body) {
-                if(err)
-                    reject(err);
-                else {
-                    let result = JSON.parse(body);
-                    if(result.errors)
+        const providerChain = new AWS.CredentialProviderChain();
+        return providerChain.resolvePromise().then(creds => {
+            return new Promise((resolve, reject) => {
+                let options = this.getOptions(creds);
+                request.post(options, function (err, res, body) {
+                    if(err)
+                        reject(err);
+                    else {
+                        let result = JSON.parse(body);
+                        if(result.errors)
                         reject(result);
                     else
                         resolve(result);
-                }
+                    }
+                });
             });
         });
     }
