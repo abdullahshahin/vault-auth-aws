@@ -1,6 +1,6 @@
 {
   "name": "vault-auth-aws",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "js module that get token from vault HashiCorp server by using AWS STS ",
   "main": "index.js",
   "bugs": {
@@ -14,6 +14,7 @@
     "test": "test"
   },
   "dependencies": {
+    "aws-sdk": "^2.176.0",
     "aws4": "^1.6.0",
     "request": "^2.81.0",
     "validator": "^8.1.0"
