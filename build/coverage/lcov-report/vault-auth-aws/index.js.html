@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">60% </span>
+        <span class="strong">57.14% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>15/25</span>
+        <span class='fraction'>16/28</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">50% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>2/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">60% </span>
+        <span class="strong">57.14% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>15/25</span>
+        <span class='fraction'>16/28</span>
       </div>
     </div>
   </div>
@@ -93,7 +93,12 @@
 48
 49
 50
-51</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+51
+52
+53
+54
+55</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -130,12 +135,15 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -143,7 +151,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const configsClass = require('./libs/configs');
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const AWS = require('aws-sdk');
+const configsClass = require('./libs/configs');
 const awsSignedCongifs = require('./libs/awsSignedConfigs');
 const request = require('request');
 &nbsp;
@@ -158,12 +167,12 @@ class vaultAwsAuth {
         this.configs = configs.getConfigs();
     }
 &nbsp;
-    getOptions () {
+    getOptions (creds) {
         let awsLoginConfigs = new awsSignedCongifs({host:this.configs.host,vaultAppName:this.configs.vaultAppName});
         let options = {
             url: this.configs.uri,
             followAllRedirects: this.configs.followAllRedirects,
-            body: JSON.stringify(awsLoginConfigs.getSignedConfigs())
+            body: JSON.stringify(awsLoginConfigs.getSignedConfigs(creds))
         };
         if(this.configs.sslCertificate) {
             options['cert'] = this.configs.sslCertificate;
@@ -175,18 +184,21 @@ class vaultAwsAuth {
     }
 &nbsp;
     authenticate <span class="fstat-no" title="function not covered" >() {</span>
-<span class="cstat-no" title="statement not covered" >        return new Promise((resolve, reject) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >            let options = this.getOptions();</span>
-<span class="cstat-no" title="statement not covered" >            request.post(options, <span class="fstat-no" title="function not covered" >function (err, res, body) {</span></span>
-<span class="cstat-no" title="statement not covered" >                if(err)</span>
-<span class="cstat-no" title="statement not covered" >                    reject(err);</span>
-                else {
-<span class="cstat-no" title="statement not covered" >                    let result = JSON.parse(body);</span>
-<span class="cstat-no" title="statement not covered" >                    if(result.errors)</span>
+<span class="cstat-no" title="statement not covered" >        const providerChain = new AWS.CredentialProviderChain();</span>
+<span class="cstat-no" title="statement not covered" >        return providerChain.resolvePromise().then(creds =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            return new Promise((resolve, reject) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >                let options = this.getOptions(creds);</span>
+<span class="cstat-no" title="statement not covered" >                request.post(options, <span class="fstat-no" title="function not covered" >function (err, res, body) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    if(err)</span>
+<span class="cstat-no" title="statement not covered" >                        reject(err);</span>
+                    else {
+<span class="cstat-no" title="statement not covered" >                        let result = JSON.parse(body);</span>
+<span class="cstat-no" title="statement not covered" >                        if(result.errors)</span>
 <span class="cstat-no" title="statement not covered" >                        reject(result);</span>
                     else
 <span class="cstat-no" title="statement not covered" >                        resolve(result);</span>
-                }
+                    }
+                });
             });
         });
     }
@@ -199,7 +211,7 @@ module.exports = vaultAwsAuth;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Feb 02 2018 10:27:07 GMT-0800 (PST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Feb 02 2018 10:39:29 GMT-0800 (PST)
 </div>
 </div>
 <script src="../prettify.js"></script>
