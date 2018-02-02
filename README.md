@@ -34,6 +34,7 @@ let vaultClient = new vaultAwsAuth({host: 'vault.example.com', vaultAppName: 'my
 - host: vault host name or IP address.
 - port: vault server port, default is 8200.
 - apiVersion: vault server API endpoint version, default is v1.
+- vaultLoginUrl: Vault login URL, default is auth/aws/login.
 - vaultAppName: Vault application name, default is lambda name if any.
 - followAllRedirects: accepts boolean, by default is true.
 - certFilePath: path for a certificate that might be needed by the server.

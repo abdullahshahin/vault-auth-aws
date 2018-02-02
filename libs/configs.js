@@ -7,7 +7,7 @@ class configs {
         this.host = args.host;
         this.port = parseInt(args.port) || 8200;
         this.apiVersion = args.apiVersion || 'v1';
-        this.vaultLoginUrl = 'auth/aws/login';
+        this.vaultLoginUrl = args.vaultLoginUrl || 'auth/aws/login';
         this.vaultAppName = args.vaultAppName || process.env.AWS_LAMBDA_FUNCTION_NAME;
         this.followAllRedirects = args.followAllRedirects || true;
         this.certFilePath = args.certFilePath;
@@ -35,6 +35,12 @@ class configs {
             return {
                 valid: false,
                 details: 'API version is either v1 or v2'
+            };
+        }
+        if(typeof this.vaultLoginUrl !== 'string') {
+            return {
+                valid: false,
+                details: 'vaultLoginUrl must be string'
             };
         }
         if(typeof this.vaultAppName !== 'string') {
