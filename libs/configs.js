@@ -58,6 +58,7 @@ class configs {
         return { valid: true };
     }
     getConfigs () {
+        this.vaultLoginUrl = encodeURI(this.vaultLoginUrl);
         let urlPrefix = this.ssl?'https://':'http://';
         this.uri = urlPrefix+this.host+':'+this.port+'/'+this.apiVersion+'/'+this.vaultLoginUrl;
         if(this.certFilePath) {
