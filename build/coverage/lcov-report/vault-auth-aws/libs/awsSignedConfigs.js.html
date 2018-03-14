@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">94.74% </span>
+        <span class="strong">90.91% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>18/19</span>
+        <span class='fraction'>20/22</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">75% </span>
+        <span class="strong">66.67% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>3/4</span>
+        <span class='fraction'>4/6</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>4/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">94.74% </span>
+        <span class="strong">90.91% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>18/19</span>
+        <span class='fraction'>20/22</span>
       </div>
     </div>
   </div>
@@ -91,7 +91,16 @@
 46
 47
 48
-49</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -99,6 +108,14 @@
 <span class="cline-any cline-yes">6×</span>
 <span class="cline-any cline-yes">6×</span>
 <span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6×</span>
@@ -139,7 +156,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span></td><td class="text"><pre class="prettyprint lang-js">const aws4 = require('aws4');
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const aws4 = require('aws4');
 &nbsp;
 class awsSignedConfigs {
     constructor(args) {
@@ -148,23 +166,31 @@ class awsSignedConfigs {
         this.awsRequestUrl = 'https://sts.amazonaws.com/';
         this.awsRequestBody = 'Action=GetCallerIdentity&amp;Version=2011-06-15';
     }
-    getSignedRequest () {
+    getSignedRequest (creds) {
+        let awsCreds = {
+            accessKeyId: creds.accessKeyId,
+            secretAccessKey: creds.secretAccessKey
+        };
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (creds.sessionToken) {
+<span class="cstat-no" title="statement not covered" >            awsCreds.sessionToken = creds.sessionToken;</span>
+        }
+&nbsp;
         <span class="missing-if-branch" title="else path not taken" >E</span>if(this.vaultHost) {
             var signedRequest = aws4.sign({
                 service: 'sts',
                 headers: {'X-Vault-AWS-IAM-Server-ID': this.vaultHost},
                 body: this.awsRequestBody
-            });
+            }, awsCreds);
             
         }
         else {
-<span class="cstat-no" title="statement not covered" >           var signedRequest = aws4.sign({service: 'sts', body: this.awsRequestBody});</span>
+<span class="cstat-no" title="statement not covered" >           var signedRequest = aws4.sign({service: 'sts', body: this.awsRequestBody}, awsCreds);</span>
         }
         return signedRequest;
     }
 &nbsp;
-    getSignedHeaders () {
-        let signedRequest = this.getSignedRequest();
+    getSignedHeaders (creds) {
+        let signedRequest = this.getSignedRequest(creds);
         let headers = signedRequest.headers;
         for (let header in headers) {
             if (typeof headers[header] === 'number') {
@@ -175,8 +201,8 @@ class awsSignedConfigs {
         return headers;
     }
 &nbsp;
-    getSignedConfigs() {
-        let headers = this.getSignedHeaders();
+    getSignedConfigs(creds) {
+        let headers = this.getSignedHeaders(creds);
 &nbsp;
         return {
             role: this.vaultAppName,
@@ -187,13 +213,14 @@ class awsSignedConfigs {
         };
     }
 }
-module.exports = awsSignedConfigs;</pre></td></tr>
+module.exports = awsSignedConfigs;
+&nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Sep 04 2017 05:13:57 GMT+0300 (EEST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Feb 16 2018 07:13:44 GMT-0800 (PST)
 </div>
 </div>
 <script src="../../prettify.js"></script>
