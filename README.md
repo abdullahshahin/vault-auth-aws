@@ -1,5 +1,5 @@
 # vault-auth-aws
-[![Build Status](https://travis-ci.org/abdullahshahin/vault-auth-aws.png?branch=master)](https://travis-ci.org/abdullahshahin/vault-auth-aws)
+[![Build Status](https://travis-ci.com/abdullahshahin/vault-auth-aws.png?branch=master)](https://travis-ci.com/abdullahshahin/vault-auth-aws)
 
 A module for authenticating against Vault server by HashiCorp when running as AWS service such as Lambda using aws STS, Vault needs to be already configured to accept login attempts using this [method](https://www.vaultproject.io/docs/secrets/aws/index.html).
 
