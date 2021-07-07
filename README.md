@@ -10,19 +10,20 @@ A module for authenticating against Vault server by HashiCorp when running as AW
 You can use below code to login to vault server from Lambda, by default vault application name is lambda name
 ```javascript
 const vaultAuthClient = require('vault-auth-aws');
-let vaultClient = new vaultAwsAuth({host: 'vault.example.com'});
-vaultClient.authenticate()
-        .then((success) => {
-                const vault = require('node-vault')({
+
+try {
+  let vaultClient = new vaultAwsAuth({host: 'vault.example.com'});
+  const success = await vaultClient.authenticate();
+  const vault = require('node-vault')({
                 apiVersion: config.apiVersion,
                 endpoint: config.endpoint,
                 token: success.auth.client_token,
             });
-            // get your super secrets.
-        })
-        .catch((fail) => {
-                // error here.
-        });
+  // get your super secrets.
+}
+catch (ex) {
+  // error here.
+}
 ```
 if you want to specify the vault application name you can do
 ```javascript
