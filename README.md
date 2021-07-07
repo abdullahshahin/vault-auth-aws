@@ -1,5 +1,5 @@
 # vault-auth-aws
-[![Build Status](https://travis-ci.org/abdullahshahin/vault-auth-aws.png?branch=master)](https://travis-ci.org/abdullahshahin/vault-auth-aws)
+[![Build Status](https://travis-ci.com/abdullahshahin/vault-auth-aws.png?branch=master)](https://travis-ci.com/abdullahshahin/vault-auth-aws)
 
 A module for authenticating against Vault server by HashiCorp when running as AWS service such as Lambda using aws STS, Vault needs to be already configured to accept login attempts using this [method](https://www.vaultproject.io/docs/secrets/aws/index.html).
 
@@ -10,19 +10,20 @@ A module for authenticating against Vault server by HashiCorp when running as AW
 You can use below code to login to vault server from Lambda, by default vault application name is lambda name
 ```javascript
 const vaultAuthClient = require('vault-auth-aws');
-let vaultClient = new vaultAwsAuth({host: 'vault.example.com'});
-vaultClient.authenticate()
-        .then((success) => {
-                const vault = require('node-vault')({
+
+try {
+  let vaultClient = new vaultAwsAuth({host: 'vault.example.com'});
+  const success = await vaultClient.authenticate();
+  const vault = require('node-vault')({
                 apiVersion: config.apiVersion,
                 endpoint: config.endpoint,
                 token: success.auth.client_token,
             });
-            // get your super secrets.
-        })
-        .catch((fail) => {
-                // error here.
-        });
+  // get your super secrets.
+}
+catch (ex) {
+  // error here.
+}
 ```
 if you want to specify the vault application name you can do
 ```javascript

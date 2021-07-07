@@ -1,1 +1,4 @@
 node_modules
+
+# Ignore Visual Studio Code
+.vscode

@@ -48,9 +48,9 @@ class awsSignedConfigs {
         return {
             role: this.vaultAppName,
             iam_http_request_method: 'POST',
-            iam_request_url: new Buffer(this.awsRequestUrl).toString('base64'),
-            iam_request_body: new Buffer(this.awsRequestBody).toString('base64'),
-            iam_request_headers: new Buffer(JSON.stringify(headers)).toString('base64')
+            iam_request_url: Buffer.from(this.awsRequestUrl).toString('base64'),
+            iam_request_body: Buffer.from(this.awsRequestBody).toString('base64'),
+            iam_request_headers: Buffer.from(JSON.stringify(headers)).toString('base64')
         };
     }
 }
