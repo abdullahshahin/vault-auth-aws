@@ -1,3 +1,8 @@
+const expect = require('chai').expect,
+      lab = exports.lab = require('@hapi/lab').script(),
+      describe = lab.describe,
+      it = lab.it;
+
 const index = require('./../index');
 
 let creds = {accessKeyId: '', secretAccessKey: ''};
@@ -7,30 +12,30 @@ describe('Testing index file functions', () => {
         let vaultAuth = new index(configs(0));
         let options = vaultAuth.getOptions(creds);
         let objectConstructor = {}.constructor;
-        expect(options.constructor).toEqual(objectConstructor);
+        expect(options.constructor).to.eq(objectConstructor);
     });
 
     it('2) options must include at least url, followAllRedirects and body', () => {
         let vaultAuth = new index(configs(0));
         let options = vaultAuth.getOptions(creds);
-        expect(typeof options['url']).toEqual('string');
-        expect(typeof options['followAllRedirects']).toEqual('boolean');
-        expect(typeof options['body']).toEqual('string');
+        expect(typeof options['url']).to.eq('string');
+        expect(typeof options['followAllRedirects']).to.eq('boolean');
+        expect(typeof options['body']).to.eq('string');
     });
 
     it('3) if certFilePath was there then options must include cert', () => {
         let vaultAuth = new index(configs(1));
         let options = vaultAuth.getOptions(creds);
-        expect(typeof options['url']).toEqual('string');
-        expect(typeof options['followAllRedirects']).toEqual('boolean');
-        expect(typeof options['body']).toEqual('string');
-        expect(typeof options['cert']).toEqual('string');
+        expect(typeof options['url']).to.eq('string');
+        expect(typeof options['followAllRedirects']).to.eq('boolean');
+        expect(typeof options['body']).to.eq('string');
+        expect(typeof options['https']['certificate']).to.eq('string');
     });
 
     it('4) if sslRejectUnAuthorized was false then NODE_TLS_REJECT_UNAUTHORIZED must be 0', () => {
         let vaultAuth = new index(configs(2));
         let options = vaultAuth.getOptions(creds);
-        expect(process.env['NODE_TLS_REJECT_UNAUTHORIZED']).toEqual('0');
+        expect(process.env['NODE_TLS_REJECT_UNAUTHORIZED']).to.eq('0');
     });
 });
 

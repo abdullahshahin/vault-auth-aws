@@ -1,7 +1,9 @@
 {
   "name": "vault-auth-aws",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "js module that get token from vault HashiCorp server by using AWS STS ",
+  "author": "Abdullah Shahin <eng.abd.shahin@gmail.com>",
+  "license": "ISC",
   "main": "index.js",
   "bugs": {
     "url": "https://github.com/abdullahshahin/vault-auth-aws/issues"
@@ -13,22 +15,22 @@
   "directories": {
     "test": "test"
   },
-  "dependencies": {
-    "aws-sdk": "^2.176.0",
-    "aws4": "^1.6.0",
-    "request": "^2.81.0",
-    "validator": "^8.1.0"
-  },
-  "devDependencies": {
-    "del": "^3.0.0",
-    "eslint-html-reporter": "^0.5.2",
-    "gulp": "^3.9.1",
-    "gulp-eslint": "^4.0.0",
-    "gulp-istanbul": "^1.1.2",
-    "gulp-jasmine": "^2.4.2"
-  },
   "scripts": {
-    "test": "gulp"
+    "clean": "rm -rf node_modules && npm install",
+    "test": "lab test",
+    "lint": "eslint ./libs index.js",
+    "lint-fix": "eslint ./libs index.js --fix",
+    "lint-test": "eslint ./test",
+    "lint-test-fix": "eslint ./test --fix",
+    "coverage": "lab -r console -o stdout -r html -o ./coverage/coverage.html -r junit -o ./coverage/junit.xml test -r lcov -o ./coverage/lcov.info"
+  },
+  "pre-commit": [
+    "lint-fix",
+    "lint-test-fix",
+    "test"
+  ],
+  "engines": {
+    "node": ">=12.0.0"
   },
   "keywords": [
     "vault",
@@ -38,6 +40,16 @@
     "lambda",
     "sts"
   ],
-  "author": "Abdullah Shahin <eng.abd.shahin@gmail.com>",
-  "license": "ISC"
+  "dependencies": {
+    "aws-sdk": "^2.939.0",
+    "aws4": "^1.11.0",
+    "got": "^11.8.2",
+    "validator": "^8.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/eslint-parser": "^7.14.7",
+    "@hapi/lab": "^24.2.1",
+    "typescript": "^4.3.5"
+  }
 }

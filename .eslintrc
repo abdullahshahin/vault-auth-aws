@@ -1,11 +1,10 @@
 {
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 10,
     "sourceType": "module"
   },
   "env": {
-  	"node": true,
-  	"es6": true
+  	"node": true
   },
   "rules": {
     "camelcase": 0,
