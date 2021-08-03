@@ -22,7 +22,6 @@ class vaultAwsAuth {
             body: JSON.stringify(awsLoginConfigs.getSignedConfigs(creds))
         };
         if(this.configs.sslCertificate) {
-            // options['cert'] = this.configs.sslCertificate;
             let https = options['https'] || {};
             https.certificate = this.configs.sslCertificate;
             options['https'] = https;
