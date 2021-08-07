@@ -6,4 +6,3 @@ install:
 cache:
   directories:
     - "node_modules"
-script: gulp

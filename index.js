@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const configsClass = require('./libs/configs');
 const awsSignedCongifs = require('./libs/awsSignedConfigs');
-const request = require('request');
+const request = require('got');
 
 class vaultAwsAuth {
 
@@ -22,7 +22,9 @@ class vaultAwsAuth {
             body: JSON.stringify(awsLoginConfigs.getSignedConfigs(creds))
         };
         if(this.configs.sslCertificate) {
-            options['cert'] = this.configs.sslCertificate;
+            let https = options['https'] || {};
+            https.certificate = this.configs.sslCertificate;
+            options['https'] = https;
         }
         if(!this.configs.sslRejectUnAuthorized) {
             process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
@@ -30,25 +32,32 @@ class vaultAwsAuth {
         return options;
     }
 
-    authenticate () {
-        const providerChain = new AWS.CredentialProviderChain();
-        return providerChain.resolvePromise().then(creds => {
-            return new Promise((resolve, reject) => {
-                let options = this.getOptions(creds);
-                request.post(options, function (err, res, body) {
-                    if(err)
-                        reject(err);
-                    else {
-                        let result = JSON.parse(body);
-                        if(result.errors)
-                        reject(result);
-                    else
-                        resolve(result);
-                    }
-                });
-            });
-        });
-    }
+    async authenticate () {
+      const providerChain = new AWS.CredentialProviderChain();
+      let creds = await providerChain.resolvePromise();
+      let options = this.getOptions(creds);
+
+      try {
+          const response = await request.post(options);
+          let result = JSON.parse(response.body);
+          if(result.errors) {
+              throw result;
+          }
+          else {
+              return result;
+          }
+      }
+      catch (error) {
+          if (error.response) {
+              let ex = new Error(error.message);
+              ex.body = JSON.parse(error.response.body);
+              throw ex;
+          }
+          else {
+              throw error;
+          }
+      }
+  }
 }
 
 module.exports = vaultAwsAuth;
