@@ -1,6 +1,6 @@
 {
   "name": "vault-auth-aws",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "js module that get token from vault HashiCorp server by using AWS STS ",
   "author": "Abdullah Shahin <eng.abd.shahin@gmail.com>",
   "license": "ISC",
