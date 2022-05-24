@@ -1,21 +1,19 @@
-const AWS = require('aws-sdk');
 const configsClass = require('./libs/configs');
-const awsSignedCongifs = require('./libs/awsSignedConfigs');
+const awsSignedConfigs = require('./libs/awsSignedConfigs');
 const request = require('got');
+const { defaultProvider } = require('@aws-sdk/credential-provider-node');
 
-class vaultAwsAuth {
+class VaultAwsAuth {
 
     constructor (args) {
         let configs = new configsClass(args);
         let validConfigs = configs.validateConfigs();
-        if(!validConfigs.valid) {
-            throw validConfigs.details;
-        }
+        if(!validConfigs.valid) throw validConfigs.details;
         this.configs = configs.getConfigs();
     }
 
     getOptions (creds) {
-        let awsLoginConfigs = new awsSignedCongifs({host:this.configs.host,vaultAppName:this.configs.vaultAppName});
+        let awsLoginConfigs = new awsSignedConfigs({host:this.configs.host,vaultAppName:this.configs.vaultAppName});
         let options = {
             url: this.configs.uri,
             followAllRedirects: this.configs.followAllRedirects,
@@ -33,31 +31,25 @@ class vaultAwsAuth {
     }
 
     async authenticate () {
-      const providerChain = new AWS.CredentialProviderChain();
-      let creds = await providerChain.resolvePromise();
-      let options = this.getOptions(creds);
+      const providerChain = defaultProvider();
+      const creds = await providerChain();
+      const options = this.getOptions(creds);
 
       try {
           const response = await request.post(options);
-          let result = JSON.parse(response.body);
-          if(result.errors) {
-              throw result;
-          }
-          else {
-              return result;
-          }
+          const result = JSON.parse(response.body);
+          if(result.errors) throw result;
+          else return result;
       }
       catch (error) {
           if (error.response) {
-              let ex = new Error(error.message);
+              const ex = new Error(error.message);
               ex.body = JSON.parse(error.response.body);
               throw ex;
           }
-          else {
-              throw error;
-          }
+          else throw error;
       }
   }
 }
 
-module.exports = vaultAwsAuth;
+module.exports = VaultAwsAuth;
