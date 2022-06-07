@@ -1,7 +1,7 @@
 const fs = require('fs');
 const validator = require('validator');
 
-class configs {
+class Configs {
     constructor(args) {
         this.ssl = args.ssl || false;
         this.host = args.host;
@@ -11,7 +11,7 @@ class configs {
         this.vaultAppName = args.vaultAppName || process.env.AWS_LAMBDA_FUNCTION_NAME;
         this.followAllRedirects = args.followAllRedirects || true;
         this.certFilePath = args.certFilePath;
-        this.sslRejectUnAuthorized = args.sslRejectUnAuthorized===undefined||args.sslRejectUnAuthorized===true?true:false;
+        this.sslRejectUnAuthorized = args.sslRejectUnAuthorized === undefined || args.sslRejectUnAuthorized === true;
     }
     validateConfigs () {
         if(typeof this.ssl !== 'boolean')
@@ -61,9 +61,7 @@ class configs {
         this.vaultLoginUrl = encodeURI(this.vaultLoginUrl);
         let urlPrefix = this.ssl?'https://':'http://';
         this.uri = urlPrefix+this.host+':'+this.port+'/'+this.apiVersion+'/'+this.vaultLoginUrl;
-        if(this.certFilePath) {
-            this.sslCertificate = fs.readFileSync(this.certFilePath,'utf8');
-        }
+        if(this.certFilePath) this.sslCertificate = fs.readFileSync(this.certFilePath,'utf8');
         let finalConfigs = {
             ssl: this.ssl,
             host: this.host,
@@ -75,9 +73,8 @@ class configs {
             followAllRedirects: this.followAllRedirects,
             sslRejectUnAuthorized: this.sslRejectUnAuthorized
         };
-        if(this.certFilePath)
-            finalConfigs['sslCertificate'] = this.sslCertificate;
+        if(this.certFilePath) finalConfigs['sslCertificate'] = this.sslCertificate;
         return finalConfigs;
     }
 }
-module.exports = configs;
+module.exports = Configs;

@@ -17,17 +17,14 @@ class awsSignedConfigs {
         }
 
         if(this.vaultHost) {
-            var signedRequest = aws4.sign({
+            return aws4.sign({
                 service: 'sts',
                 headers: {'X-Vault-AWS-IAM-Server-ID': this.vaultHost},
                 body: this.awsRequestBody
             }, awsCreds);
-            
         }
-        else {
-           var signedRequest = aws4.sign({service: 'sts', body: this.awsRequestBody}, awsCreds);
-        }
-        return signedRequest;
+
+       return aws4.sign({service: 'sts', body: this.awsRequestBody}, awsCreds);
     }
 
     getSignedHeaders (creds) {
