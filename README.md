@@ -6,7 +6,7 @@ A module for authenticating against Vault server by HashiCorp when running as AW
 ### Prerequisites
 Uses AWS SDK v3.
 
-### install 
+### install
 `npm install vault-auth-aws`
 
 ### Login
@@ -43,6 +43,7 @@ let vaultClient = new VaultAwsAuth({ host: 'vault.example.com', vaultAppName: 'm
 - apiVersion: vault server API endpoint version, default is v1.
 - vaultLoginUrl: Vault login URL, default is auth/aws/login.
 - vaultAppName: Vault application name, default is lambda name if any.
+- vaultNamespace: Vault namespace to use, default is blank. Can also be set using VAULT_NAMESPACE environment variable. See [Vault Namespaces](https://www.vaultproject.io/docs/enterprise/namespaces/index.html) for more information.
 - followAllRedirects: accepts boolean, by default is true.
 - certFilePath: path for a certificate that might be needed by the server.
 - sslRejectUnAuthorized: accepts boolean, specified once the certificate is self-signed and cannot be verified, default is true.

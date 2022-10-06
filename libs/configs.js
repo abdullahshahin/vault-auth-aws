@@ -9,6 +9,7 @@ class Configs {
         this.apiVersion = args.apiVersion || 'v1';
         this.vaultLoginUrl = args.vaultLoginUrl || 'auth/aws/login';
         this.vaultAppName = args.vaultAppName || process.env.AWS_LAMBDA_FUNCTION_NAME;
+        this.vaultNamespace = args.vaultNamespace || process.env.VAULT_NAMESPACE;
         this.followAllRedirects = args.followAllRedirects || true;
         this.certFilePath = args.certFilePath;
         this.sslRejectUnAuthorized = args.sslRejectUnAuthorized === undefined || args.sslRejectUnAuthorized === true;
@@ -49,6 +50,12 @@ class Configs {
                 details: 'vaultAppName must be string'
             };
         }
+        if (this.vaultNamespace && typeof this.vaultNamespace !== "string") {
+          return {
+            valid: false,
+            details: "vaultNamespace must be string",
+          };
+        }
         if(typeof this.followAllRedirects !== 'boolean') {
             return {
                 valid: false,
@@ -69,6 +76,7 @@ class Configs {
             apiVersion: this.apiVersion,
             vaultLoginUrl: this.vaultLoginUrl,
             vaultAppName: this.vaultAppName,
+            vaultNamespace: this.vaultNamespace,
             uri: this.uri,
             followAllRedirects: this.followAllRedirects,
             sslRejectUnAuthorized: this.sslRejectUnAuthorized

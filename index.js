@@ -27,6 +27,11 @@ class VaultAwsAuth {
         if(!this.configs.sslRejectUnAuthorized) {
             process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
         }
+        if (this.configs.vaultNamespace) {
+            options.headers = {
+                "X-Vault-Namespace": this.configs.vaultNamespace,
+            };
+        }
         return options;
     }
 
